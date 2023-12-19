@@ -2,7 +2,8 @@ var express = require('express')
 var cookieParser = require('cookie-parser')
 const e = require('express')
 var app = express()
-app.use(cookieParser())
+app.use(cookieParser('dfad&fke(66%&4'))
+// key 값
 
 var products = {
     1: {title : 'Goods1'},
@@ -19,8 +20,8 @@ app.get('/products', function(req, res) {
 
 app.get('/cart/:id', function(req, res){
     var id = req.params.id
-    if(req.cookies.cart){
-        var cart = req.cookies.cart
+    if(req.signedCookies.cart){
+        var cart = req.signedCookies.cart
     }
     else {
         var cart = {}
@@ -28,13 +29,13 @@ app.get('/cart/:id', function(req, res){
     if(!cart[id]) cart[id] = 0
     cart[id] = parseInt(cart[id]) + 1
 
-    res.cookie('cart', cart)
+    res.cookie('cart', cart, {signed:true})
     res.redirect('/cart')
 })
 
 app.get('/cart', function(req, res){
     // cart의 쿠키값 전달
-    var cart = req.cookies.cart
+    var cart = req.signedCookies.cart
     if(!cart){
         res.send('EMPTY!')
     }
@@ -51,14 +52,14 @@ app.get('/cart', function(req, res){
 })
 
 app.get('/count', function(req, res){
-    if(req.cookies.count) {
-        var count =  parseInt(req.cookies.count)
+    if(req.signedCookies.count) {
+        var count =  parseInt(req.signedCookies.count)
     }
     else {
         var count = 0
     }
     count = count + 1
-    res.cookie('count', count)
+    res.cookie('count', count, {signed:true})
     res.send('count : ' + count)
 })
 
