@@ -33,6 +33,20 @@ app.get('/cart/:id', function(req, res){
 })
 
 app.get('/cart', function(req, res){
+    // cart의 쿠키값 전달
+    var cart = req.cookies.cart
+    if(!cart){
+        res.send('EMPTY!')
+    }
+    else {
+        var output = ''
+        for(var id in cart){
+            // id는 제품의 id값
+            output += `<li>${products[id].title} (${cart[id]})</li>`
+        }
+        res.send(`<h1>CART</h1><ul>${output}</ul><a href="/products">Products List</a>`)
+    }
+
     res.send('hi! cart')
 })
 
