@@ -44,6 +44,11 @@ app.get('/auth/login', (req, res)=>{
     res.send(output)
 })
 
+app.get('/logout', (req, res)=>{
+    delete req.session.displayname
+    redirect('/welcome')
+})
+
 app.get('/welcome', (req, res)=>{
     if(req.session.displayname){
         res.send(`<h1>Welcome : ${req.session.displayname}</h1>
@@ -52,7 +57,7 @@ app.get('/welcome', (req, res)=>{
     else {
         res.send(`
             <h1>Login please</h1>
-            <a href="/auth/login">login</a>
+            <a href="/auth/logout">login</a>
         `)
     }
 })
