@@ -52,15 +52,16 @@ app.get('/logout', (req, res)=>{
 app.get('/welcome', (req, res)=>{
     if(req.session.displayname){
         res.send(`<h1>Welcome : ${req.session.displayname}</h1>
-                <a href="/auth/login"> logout </a>`)
+                <a href="/auth/logoout"> logout </a>`)
     }
     else {
         res.send(`
             <h1>Login please</h1>
-            <a href="/auth/logout">login</a>
+            <a href="/auth/login">login</a>
         `)
     }
 })
+
 app.get('/count', (req, res)=>{
     if(req.session.count) req.session.count++
     else req.session.count = 1
