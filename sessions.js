@@ -13,13 +13,17 @@ app.use(session({
 app.post('/auth/login', (req, res)=>{
     var savedUser = {
         user : 'jieun',
-        pw : '1234'
+        pw : '1234',
+        displayname : 'Jieun!'
     }
     var user = req.body.username
     var pw = req.body.password
     
     
-    if(user === savedUser.user && pw === savedUser.pw) res.redirect('/welcome')
+    if(user === savedUser.user && pw === savedUser.pw) {
+        req.session.displayname = savedUser.displayname
+        res.redirect('/welcome')
+    }
     else res.send(`who are you <a href="/auth/login>login</a>"`)
 })
 
@@ -40,6 +44,18 @@ app.get('/auth/login', (req, res)=>{
     res.send(output)
 })
 
+app.get('/welcome', (req, res)=>{
+    if(req.session.displayname){
+        res.send(`<h1>Welcome : ${req.session.displayname}</h1>
+                <a href="/auth/login"> logout </a>`)
+    }
+    else {
+        res.send(`
+            <h1>Login please</h1>
+            <a href="/auth/login">login</a>
+        `)
+    }
+})
 app.get('/count', (req, res)=>{
     if(req.session.count) req.session.count++
     else req.session.count = 1
