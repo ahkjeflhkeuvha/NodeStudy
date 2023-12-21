@@ -1,6 +1,5 @@
 var express = require('express')
 var cookieParser = require('cookie-parser')
-const e = require('express')
 var app = express()
 app.use(cookieParser('dfad&fke(66%&4'))
 // key 값
@@ -43,12 +42,15 @@ app.get('/cart', function(req, res){
         var output = ''
         for(var id in cart){
             // id는 제품의 id값
+            console.log(id)
+            console.log(cart[id])
+            console.log(cart)
+            console.log(products[id])
+            console.log(products)
             output += `<li>${products[id].title} (${cart[id]})</li>`
         }
         res.send(`<h1>CART</h1><ul>${output}</ul><a href="/products">Products List</a>`)
     }
-
-    res.send('hi! cart')
 })
 
 app.get('/count', function(req, res){
