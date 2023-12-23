@@ -3,6 +3,7 @@ var session = require('express-session')
 var bodyParser = require('body-parser')
 var app = express()
 var md5 = require('md5')
+var salt = 'dfae$#@Eaf#we3'
 
 app.use(bodyParser.urlencoded({extended : false}))
 app.use(session({
@@ -14,14 +15,14 @@ app.use(session({
 app.post('/auth/login', (req, res)=>{
     var savedUser = {
         user : 'jieun',
-        pw : '81dc9bdb52d04dc20036dbd8313ed055',
+        pw : 'c7803d1d15ddf56af8b3898c0644c174',
         displayname : 'Jieun!'
     }
     var user = req.body.username
     var pw = req.body.password
     
     
-    if(user === savedUser.user && md5(pw) === savedUser.pw) {
+    if(user === savedUser.user && md5(pw + salt) === savedUser.pw) {
         req.session.displayname = savedUser.displayname
         res.redirect('/welcome')
     }
