@@ -2,6 +2,7 @@ var express = require('express')
 var session = require('express-session')
 var bodyParser = require('body-parser')
 var app = express()
+var md5 = require('md5')
 
 app.use(bodyParser.urlencoded({extended : false}))
 app.use(session({
@@ -13,14 +14,14 @@ app.use(session({
 app.post('/auth/login', (req, res)=>{
     var savedUser = {
         user : 'jieun',
-        pw : '1234',
+        pw : '81dc9bdb52d04dc20036dbd8313ed055',
         displayname : 'Jieun!'
     }
     var user = req.body.username
     var pw = req.body.password
     
     
-    if(user === savedUser.user && pw === savedUser.pw) {
+    if(user === savedUser.user && md5(pw) === savedUser.pw) {
         req.session.displayname = savedUser.displayname
         res.redirect('/welcome')
     }
@@ -46,13 +47,13 @@ app.get('/auth/login', (req, res)=>{
 
 app.get('/logout', (req, res)=>{
     delete req.session.displayname
-    redirect('/welcome')
+    res.redirect('/welcome')
 })
 
 app.get('/welcome', (req, res)=>{
     if(req.session.displayname){
         res.send(`<h1>Welcome : ${req.session.displayname}</h1>
-                <a href="/auth/logoout"> logout </a>`)
+                <a href="/logout"> logout </a>`)
     }
     else {
         res.send(`
