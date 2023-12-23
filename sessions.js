@@ -1,9 +1,11 @@
 var express = require('express')
 var session = require('express-session')
 var bodyParser = require('body-parser')
-var app = express()
+var bkfd2Password = require('pbkdf2-password')
 var md5 = require('md5')
 var salt = 'dfae$#@Eaf#we3'
+var hasher = bkfd2Password()
+var app = express()
 
 app.use(bodyParser.urlencoded({extended : false}))
 app.use(session({
@@ -12,15 +14,15 @@ app.use(session({
     saveUnitionaized: true //session id를 사용하기 전까지 접속 X
 }))
 
-app.post('/auth/login', (req, res)=>{
-    var savedUser = {
-        user : 'jieun',
-        pw : 'c7803d1d15ddf56af8b3898c0644c174',
-        displayname : 'Jieun!'
-    }
+var savedUser = {
+    user : 'jieun',
+    pw : 'c7803d1d15ddf56af8b3898c0644c174',
+    displayname : 'Jieun!'
+}
+
+app.post('/auth/login', (req, res)=>{   
     var user = req.body.username
     var pw = req.body.password
-    
     
     if(user === savedUser.user && md5(pw + salt) === savedUser.pw) {
         req.session.displayname = savedUser.displayname
